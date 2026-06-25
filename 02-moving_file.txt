@@ -1,0 +1,99 @@
+The Basic Syntax
+The general syntax for the mv command is:
+source: The file or directory you want to move.
+destination: Where you want to move it (a folder path) or what you want to name it (a new filename).
+A. Moving a File to a Directory
+If you want to move a file named report.txt into a folder named documents/, you run:
+        ~ $ ls
+        chetan  chetana  demo.txt  devops  devops1  test_file.sh  testing.txt
+        ~ $ mv demo.txt devops
+        ~ $ ls
+        chetan  chetana  devops  devops1  test_file.sh  testing.txt
+
+B. Renaming a File
+Because moving a file to the same directory under a different name is technically a "move," you use mv to rename files:
+        ~ $ cd devops
+        devops $ ls
+        chetan.txt  demo.txt  subdevops  usertest_1.txt  usertest_2.txt  usertest_3.txt
+        devops $ mv demo.txt demo_new.txt 
+        devops $ ls
+        chetan.txt  demo_new.txt  subdevops  usertest_1.txt  usertest_2.txt  usertest_3.txt
+        devops $ 
+
+C. Moving Multiple Files
+You can move multiple files at once by listing them before the destination directory:
+        devops $ ls
+        chetan.txt  demo.txt  subdevops  usertest_1.txt  usertest_2.txt  usertest_3.txt
+        devops $ mv demo.txt demo_new.txt 
+        devops $ ls
+        chetan.txt  demo_new.txt  subdevops  usertest_1.txt  usertest_2.txt  usertest_3.txt
+        devops $ mv demo_new.txt usertest_1.txt usertest_2 usertest_3.txt subdevops/
+        mv: cannot stat 'usertest_2': No such file or directory
+
+D. Moving Directories
+Moving a directory is the same as moving a file. If you move folder_a into folder_b, folder_a will become a subdirectory of folder_b.
+        ~ $ ls
+        chetan  chetana  devops  devops1  test_file.sh  testing.txt
+        ~ $ sudo mv chetana chetan/ 
+        ~ $ ls
+        chetan  devops  devops1  test_file.sh  testing.txt
+
+Important Options (Flags)
+The mv command has a few safety options that are very important for beginners:
+
+-i (Interactive): This is highly recommended. It forces the system to ask for confirmation before 
+    overwriting an existing file.
+    Example: mv -i file.txt destination/
+        -n (No-clobber): This prevents mv from overwriting any existing files at the destination. 
+        ~ $ ls
+        chetan  devops  devops1  test_file.sh  testing.txt
+        ~ $ mv -i test_file.sh devops/
+        ~ $ ls
+        chetan  devops  devops1  testing.txt
+        ~ $ cd devops
+        devops $ ls
+        chetan.txt  subdevops  test_file.sh
+        devops $ cd ..
+        ~ $ ls
+        chetan  devops  devops1  testing.txt
+        ~ $ touch test_file.sh
+        ~ $ ls
+        chetan  devops  devops1  test_file.sh  testing.txt
+        ~ $ mv -i test_file.sh devops/
+        mv: overwrite 'devops/test_file.sh'? y
+        ~ $ ls
+        chetan  devops  devops1  testing.txt
+        ~ $ cd devops
+        devops $ ls
+        chetan.txt  subdevops  test_file.sh
+        devops $ 
+
+It will silently skip the move if a file with the same name exists.
+        -v (Verbose): This makes the terminal "talkative," showing you exactly what is happening 
+        (e.g., "renamed 'file1.txt' -> 'folder/file1.txt'").
+        devops $ cd ..
+        ~ $ touch test_file.sh
+        ~ $ mv -v test_file.sh devops/
+        renamed 'test_file.sh' -> 'devops/test_file.sh'
+        ~ $ cd devops
+        devops $ ls
+        chetan.txt  subdevops  test_file.sh
+        devops $ 
+
+ Key Concepts to Remember
+1. Destructive Behavior: By default, mv will overwrite files in the destination without warning if they share the same name. Always use mv -i if you aren't sure.
+
+2. Permissions: You need write permissions in the directory you are moving a file out of (to remove the file reference) and the directory you are moving the file into (to create the new reference).
+
+3. Same Filesystem: Moving files within the same partition/disk is nearly instantaneous because the system only updates the file's "path" in the filesystem index, rather than copying the data.
+
+4. Absolute vs. Relative Paths: You can use relative paths (../folder/file) or absolute paths (/home/user/documents/file) as the source or destination.
+
+
+Quick Practice Exercise
+Try these steps in your terminal to get comfortable:
+
+Create a test file: touch test.txt
+Create a folder: mkdir test_folder
+Move the file into the folder: mv test.txt test_folder/
+Rename the file inside the folder: mv test_folder/test.txt test_folder/new_test.txt
