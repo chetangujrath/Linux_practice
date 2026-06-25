@@ -162,7 +162,7 @@ rmdir [name]: Removes an empty directory.
         -rw-r--r--. 1 cloudshell-user cloudshell-user    0 Jun 25 14:17 readme.txt
         drwxr-xr-x. 2 cloudshell-user cloudshell-user 4096 Jun 25 14:20 .
         devops-practice $ 
-        
+
 rm -r [name]: Removes a directory and everything inside it (recursive delete). Use this with extreme caution!
         ~ $ pwd
         /home/cloudshell-user
@@ -172,3 +172,30 @@ rm -r [name]: Removes a directory and everything inside it (recursive delete). U
         ~ $ ls
         chetan  chetana  demo.txt  devops  devops1  test_file.sh  testing.txt
         ~ $ 
+
+Viewing Content
+cat [filename]: Concatenates and displays the entire content of a file on your screen. Best for small files.
+        ~ $ ls
+        chetan  chetana  demo.txt  devops  devops1  test_file.sh  testing.txt
+        ~ $ cat test_file.sh 
+        yum install tree -y 
+
+        #this is testing file,I have added some text here.
+
+        yum install nginx -y 
+
+        sudo su adduser
+        ~ $ 
+
+less [filename]: Opens the file in a scrollable view. Use q to exit. Great for long files.
+         $ less test_file.sh  
+
+head / tail: Displays the first or last 10 lines of a file, respectively.
+        $ tail -5 test_file.sh                                                                                                                                 
+        We have a fantastic library filled with countless books.
+        The playground is spacious, allowing us to play and stay active.
+        The teachers are incredibly kind, helpful, and supportive.
+        I learn new things every day and study joyfully with friends.
+        My school truly feels like a second home
+        ~ $ less -5 test_file.sh 
+
