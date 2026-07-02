@@ -1,0 +1,31 @@
+1. The Core Directories (FHS Standard)
+Most Linux distributions follow the Filesystem Hierarchy Standard (FHS), which ensures that software and users know exactly where to find configuration files, binaries, and libraries.
+
+/bin: Contains essential binary executables (commands) that are needed in single-user mode (e.g., ls, cp, mv).
+/sbin: Similar to /bin, but contains system binaries meant for the superuser (root) for system maintenance (e.g., iptables, fdisk).
+/etc: This is the "home" for system-wide configuration files. If you want to change how a service behaves (like network settings or user accounts), you look here.
+/dev: Contains device files. Linux treats hardware as files. For example, your first hard drive might be /dev/sda, and your terminal might be /dev/tty.
+/proc: A virtual filesystem that acts as an interface to kernel data structures. It contains information about currently running processes and system resources.
+/var: Stands for variable. It contains files that are expected to grow in size, such as system logs (/var/log), mail queues, and print spools.
+/tmp: A directory for temporary files. Files here are often deleted when the system reboots.
+/usr: Stands for Unix System Resources. This is where most user-installed software, documentation, and libraries reside. It is often the largest directory.
+/home: This is where user personal directories are stored (e.g., /home/username). Every user has their own space here to store documents, downloads, and personal config files.
+/root: The home directory of the root user (the superuser). It is separate from /home to ensure that even if a home directory is unmounted or inaccessible, the system administrator still has access to their own files.
+/lib: Contains essential shared libraries needed by the binaries in /bin and /sbin.
+/boot: Contains files necessary for the boot process, including the Linux kernel and the bootloader (like GRUB).
+/mnt or /media: Used for mounting external file systems. /media is typically for removable media like USB drives, while /mnt is often used for temporary manual mounts.
+
+2. Key Navigation Concepts
+To navigate this tree, you need to understand two types of paths:
+
+Absolute Paths: The full path starting from the root directory.
+Example: /home/user/documents/file.txt always points to that file regardless of where you currently are.
+Relative Paths: The path starting from your "Current Working Directory."
+Example: If you are in /home/user, the path documents/file.txt is a relative path.
+3. Quick Tips for Navigation
+pwd (Print Working Directory): Use this command to see exactly where you are in the tree.
+cd (Change Directory): Use this to move between folders.
+cd / takes you to the absolute root.
+cd .. takes you one level up.
+cd ~ takes you back to your home directory.
+ls (List): Use this to see the contents of your current directory.
