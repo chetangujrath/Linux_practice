@@ -1,0 +1,116 @@
+1. Creating Files
+The most common way to create an empty file is the touch command.
+
+touch <filename>: This creates an empty file. If the file already exists, it simply updates the file's "last modified" timestamp without changing the content.
+    Example: touch notes.txt
+    ~ $ ls
+    chetan  devops  devops1  testing.txt
+    ~ $ touch sample.sh
+    ~ $ ls
+    chetan  devops  devops1  sample.sh  testing.txt
+
+cat > <filename>: This allows you to create a file and immediately add text to it. 
+Type your text, then press Ctrl + D to save and exit.
+    Example: cat > filename.txt
+    ~ $ cat > demo_file.txt
+    sample text
+    ~ $ ls
+    chetan  demo_file.txt  devops  devops1  sample.sh  testing.txt
+
+nano or vi: These are terminal-based text editors. You can create a file and start editing it immediately.
+    Example:
+    ls 
+    chetan  demo_file.txt  devops  devops1  sample.sh  testing.txt
+    ~ $ nano nano_demo.txt
+    ~ $ ls
+    chetan  demo_file.txt  devops  devops1  nano_demo.txt  sample.sh  testing.txt
+    ~ $ cat nano_demo.txt 
+    this is nano demo file 
+    we need to add new text here for scripting n all
+
+    sab yaha hi aayenga
+
+    ~ $ vi vi_demo_file.txt
+    ~ $ ls
+    chetan  demo_file.txt  devops  devops1  nano_demo.txt  sample.sh  testing.txt  vi_demo_file.txt
+    ~ $ cat vi_demo_file.txt 
+    this is Vim file demo file.
+    we need to add test and code here.
+
+
+    end and 
+
+2. Creating Directories
+To create folders (directories), we use the mkdir command (make directory).
+    mkdir <dirname>: Creates a new directory.
+    Example: mkdir my_folder
+    mkdir -p <path/to/directory>: The -p flag is very useful. It creates parent directories if they don’t exist yet.
+    Example: mkdir -p project/src/assets (This creates all three nested folders at once).
+    ~ $ mkdir demo_dir/demo_sub_dir
+    ~ $ ls
+    chetan  demo_dir  demo_sub_dir  devops  devops1
+    ~ $ mkdir -p ./demo_dir/sub_dir
+    ~ $ ls
+    chetan  demo_dir  demo_sub_dir  devops  devops1
+    ~ $ cd demo_dir/
+    demo_dir $ ls
+    demo_file.txt  demo_sub_dir  nano_demo.txt  sample.sh  sub_dir  testing.txt  vi_demo_file.txt
+
+3. Deleting Files
+Removing files is permanent in the terminal—there is no "Trash" or "Recycle Bin." Be careful!
+    rm <filename>: Removes a file.
+    demo_dir $ ls
+    demo_file.txt  demo_sub_dir  nano_demo.txt  sample.sh  sub_dir  testing.txt  vi_demo_file.txt
+    demo_dir $ rm sample.sh 
+    demo_dir $ ls
+    demo_file.txt  demo_sub_dir  nano_demo.txt  sub_dir  testing.txt  vi_demo_file.txt
+    demo_dir $ 
+    Example: rm old_file.txt
+
+rm -i <filename>: The interactive flag. It will ask for confirmation before deleting the file. This is a great habit for beginners.
+    Example: 
+    demo_file.txt  demo_sub_dir  nano_demo.txt  sub_dir  testing.txt  vi_demo_file.txt
+    demo_dir $ rm -i nano_demo.txt 
+    rm: remove regular file 'nano_demo.txt'? y
+    demo_dir $ ls
+    demo_file.txt  demo_sub_dir  sub_dir  testing.txt  vi_demo_file.txt
+    demo_dir $ 
+
+4. Deleting Directories
+Deleting directories requires different flags because, by default, rm will not delete a folder.
+
+rmdir <dirname>: This only works if the directory is completely empty.
+    Example:
+    ~ $ ls
+    chetan  demo_dir  demo_sub_dir  devops  devops1
+    ~ $ rmdir demo_sub_dir/
+    ~ $ ls
+    chetan  demo_dir  devops  devops1
+
+rm -r <dirname>: The recursive flag. It deletes the directory and everything inside it (files and subdirectories).
+    Example:
+    demo_dir $ ls
+    demo_file.txt  demo_sub_dir  sub_dir  testing.txt  vi_demo_file.txt
+    demo_dir $ rm -r sub_dir/
+    demo_dir $ ls
+    demo_file.txt  demo_sub_dir  testing.txt  vi_demo_file.txt
+rm -rf <dirname>: The "forceful recursive" delete. It deletes everything without asking for confirmation. Use this with extreme caution, as it can easily delete system files if you aren't careful.
+    Example:
+    ~ $ ls
+    chetan  demo_dir  devops  devops1
+    ~ $ cd demo_dir/
+    demo_dir $ ls
+    demo_file.txt  demo_sub_dir  testing.txt  vi_demo_file.txt
+    demo_dir $ cd ..
+    ~ $ rm -rf demo_dir/
+    ~ $ ls
+    chetan  devops  devops1
+    
+Quick Summary Table
+Goal	Command
+Create file	touch filename.txt
+Create directory	mkdir folder_name
+Create nested dirs	mkdir -p a/b/c
+Delete file	rm filename.txt
+Delete empty dir	rmdir folder_name
+Delete dir + contents	rm -rf folder_name
