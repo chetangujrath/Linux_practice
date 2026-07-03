@@ -1,0 +1,45 @@
+In Linux, the Command Path is a fundamental concept that determines how your shell finds the programs you want to run.
+
+When you type a command in your terminal (like ls, grep, or python), the system doesn't automatically know where those programs are stored on your hard drive. Instead, it looks through a predefined list of directories to find an executable file with that name.
+
+1. The $PATH Environment Variable
+    The list of directories that the shell searches is stored in an environment variable called PATH.
+
+    You can see your current path by running this command:
+
+    bash
+
+    echo $PATH
+    The output will look something like this: /usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+
+    Key characteristics of $PATH:
+
+    Colon-separated: The directories are separated by colons (:).
+    Order matters: The shell searches these directories from left to right. As soon as it finds a match, it executes that file and stops searching. If you have two programs with the same name in different folders, the one in the directory that appears earlier in your $PATH will be the one that runs.
+2. How the shell finds a command
+    When you type ls, the shell performs these steps:
+
+    It checks if ls is an alias or a shell built-in (like cd).
+    If it isn't, the shell splits the $PATH variable by the colon delimiter.
+    It checks /usr/local/bin/ls, then /usr/bin/ls, then /bin/ls, and so on.
+    If it finds the file and it has "execute" permissions, it runs it.
+    If it checks all directories in the path and finds nothing, it returns: bash: command not found.
+3. How to locate a command
+    If you are ever unsure where a command is being pulled from, you can use these tools:
+
+    which <command>: Shows you the absolute path to the executable that would be run.
+    Example: which python might return /usr/bin/python.
+    whereis <command>: Shows the location of the binary, the source code, and the manual page for the command.
+    type <command>: Tells you if the command is a shell built-in, an alias, or a file on the disk.
+4. Modifying your $PATH
+    Sometimes you may install a program in a custom folder (e.g., /home/user/my-scripts) and want to run those scripts without typing the full path every time. You can add this directory to your path:
+
+    bash
+
+    export PATH=$PATH:/home/user/my-scripts
+    Note: This change is temporary and only lasts for your current terminal session. To make it permanent, you need to add that line to your shell configuration file (like ~/.bashrc or ~/.zshrc).
+
+Summary for your roadmap
+Why it exists: It allows you to run commands by name instead of typing /usr/bin/ls every time.
+The mechanism: It uses the $PATH environment variable.
+The rule: Order is everything; leftmost directories take priority.
