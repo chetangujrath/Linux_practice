@@ -1,0 +1,53 @@
+In Linux, Environment Variables are dynamic-named values that can affect the way running processes behave on a computer. Think of them as "configuration settings" that are stored in the system’s memory, which applications and scripts can read to adjust their behavior without needing hard-coded values.
+
+Here is a breakdown of how they work, how to view them, and how to manage them.
+
+1. What are they?
+An environment variable consists of a name (key) and a value.
+
+    Example: USER=jdoe
+    When you run a command in the terminal, it inherits a copy of these variables from the "parent" shell.
+
+2. How to view them
+You can list all currently defined environment variables using the env or printenv commands.
+
+    printenv: Prints all variables.
+    printenv [VARIABLE_NAME]: Prints the value of a specific variable.
+    echo $[VARIABLE_NAME]: Another common way to see a specific variable (e.g., echo $HOME).
+    Commonly used variables:
+
+    USER: The current logged-in user.
+    HOME: The path to the current user's home directory.
+    PATH: A list of directories that the shell searches to find executable programs.
+    SHELL: The path to the current shell (e.g., /bin/bash).
+
+3. Creating and Exporting Variables
+There is a distinction between Shell Variables and Environment Variables:
+
+    Shell Variables: Only available in the current shell session. They are not passed to child processes.
+    Example: MY_VAR="hello"
+    Environment Variables: Available to the shell and any child processes (scripts, programs) started by that shell. You create these using the export command.
+    Example: export MY_VAR="hello"
+
+4. Making Changes Persistent
+If you set a variable using export in your terminal, it will disappear as soon as you close the terminal window. To make a variable permanent, you must add it to your shell's configuration files.
+
+    For most users using Bash, this file is ~/.bashrc (or ~/.bash_profile on some systems).
+
+    Open the file: nano ~/.bashrc
+    Add the line at the bottom: export MY_VAR="hello"
+    Save and exit.
+    Apply the changes immediately by running: source ~/.bashrc
+
+5. The Importance of $PATH
+    The PATH variable is arguably the most important one. It contains a colon-separated list of directories. When you type a command like ls, the shell looks through these directories one by one to find the ls executable.
+
+    If you ever create your own script and want to run it from anywhere by just typing its name, you would add its directory to your PATH: export PATH=$PATH:/home/user/my_scripts
+
+    (Note: We use $PATH inside the new definition to ensure we don't delete the existing paths, but rather append to them.)
+
+Summary Checklist
+env: Lists all exported variables.
+export KEY=VALUE: Sets an environment variable.
+$VARIABLE: How to reference a variable in a command.
+~/.bashrc: Where to put variables to make them "stick" across reboots.
