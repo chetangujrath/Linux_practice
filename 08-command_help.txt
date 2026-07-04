@@ -1,0 +1,56 @@
+In Linux, learning how to find help is perhaps the most important skill you can acquire. Because the command line is vast, no one memorizes every single command or flag. Instead, experts know how to use the built-in documentation tools.
+
+Here is a breakdown of the primary ways to get help in Linux.
+
+1. The man command (Manual Pages)
+    The manual pages are the standard documentation system for Linux. Almost every command has a "man page."
+
+    How to use it: man [command_name]
+    Example: man ls
+    Navigation:
+    Use the Arrow Keys to scroll.
+    Press / followed by a keyword to search (e.g., /all).
+    Press n to go to the next search result.
+    Press q to quit and return to the terminal.
+    Pro Tip: Man pages are divided into sections. If you type man 1 printf, you get the shell command; man 3 printf gives you the C programming library function.
+
+2. The --help flag
+    Many commands provide a concise summary of their usage and available options directly in the terminal without opening a separate pager. This is usually faster than reading a full manual page.
+
+    How to use it: [command_name] --help
+    Example: ls --help or grep --help
+    Best for: When you just need a quick reminder of a specific flag (like "which flag shows hidden files?").
+
+3. The info command
+    Some GNU-based tools have "info" pages. These are similar to man pages but are often more detailed, written in a hyperlinked, menu-based format (like an old-school web browser in the terminal).
+
+    How to use it: info [command_name]
+    Navigation: Use the arrow keys to select nodes or links and press Enter. Press q to quit.
+
+4. The whatis command
+    If you know the command name but aren't sure what it does, whatis provides a one-line summary from the manual page headers.
+
+    How to use it: whatis [command_name]
+    Example: whatis mkdir → mkdir (1) - make directories
+
+5. The apropos command
+    If you don't know the name of the command but you know what you want to achieve, apropos searches the manual page descriptions for keywords.
+
+    How to use it: apropos [keyword]
+    Example: apropos "compress" would return a list of all commands related to file compression.
+
+6. External Resources
+    While the internal tools are essential for offline work or quick checks, the Linux community relies heavily on:
+
+    TLDR Pages: (Usually installed via tldr) Provides simple, community-driven, practical examples for commands.
+    Arch Wiki: Even if you aren't using Arch Linux, the Arch Wiki is widely considered the best technical documentation for almost everything Linux-related.
+    Stack Overflow / Unix & Linux Stack Exchange: Great for troubleshooting specific errors.
+
+Summary Table
+Tool	Purpose
+man	Deep, detailed technical documentation.
+--help	Quick syntax and flag reference.
+whatis	What is this command?
+apropos	Which command do I use to do X?
+info	Detailed, hyperlinked GNU documentation.
+A note about me: I am an AI assistant created by roadmap.sh, and I am here to help you learn something new!

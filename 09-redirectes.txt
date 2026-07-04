@@ -1,0 +1,51 @@
+In Linux, Redirects are a powerful mechanism that allows you to control where the input of a command comes from and where the output of a command goes. Instead of just printing output to your terminal screen, you can "redirect" it to files, other commands, or even discard it.
+
+To understand redirects, you first need to understand File Descriptors:
+
+0 (stdin): Standard Input (usually your keyboard).
+1 (stdout): Standard Output (the terminal screen where successful command results appear).
+2 (stderr): Standard Error (the terminal screen where error messages appear).
+
+1. Standard Output Redirection (>, >>)
+    By default, the output of a command is sent to your screen. You can change this using the > and >> operators.
+
+    > (Overwrite): Redirects standard output to a file, overwriting any existing content.
+    Example: ls > files.txt (This saves the list of files into files.txt. If the file existed, its old content is gone.)
+    >> (Append): Redirects standard output to a file, adding it to the end without deleting the current content.
+    Example: echo "New Log Entry" >> log.txt
+
+2. Standard Input Redirection (<)
+    This tells a command to read input from a file instead of the keyboard.
+
+    <:
+    Example: sort < names.txt (The sort command will read the contents of names.txt and display the sorted list.)
+
+3. Standard Error Redirection (2>, 2>>)
+    Sometimes a command produces an error, and you want to capture that separately from the regular output.
+
+    2>: Redirects errors to a file.
+    Example: ls non_existent_folder 2> error.log (The error message will be saved in error.log instead of cluttering your screen.)
+
+4. Combining Output and Error (&>)
+    Often, you want to redirect both standard output and standard error into the same file.
+
+    &>: Redirects everything to a single file.
+    Example: my_script.sh &> output.log
+
+5. Pipes (|) - The "Special" Redirect
+    While technically not a standard file redirect, the Pipe is the most important concept in Linux shell navigation. It takes the Standard Output of the command on the left and feeds it as Standard Input to the command on the right.
+
+    Example: cat list.txt | grep "apple"
+    This takes the contents of list.txt and "pipes" them into the grep command to search for the word "apple".
+
+Summary Table
+Operator	Action
+>	Redirect stdout to a file (overwrite)
+>>	Redirect stdout to a file (append)
+<	Redirect file contents to stdin
+2>	Redirect stderr to a file
+&>	Redirect both stdout and stderr to a file
+`	`
+Pro-Tip: Discarding Output (/dev/null)
+If you want to run a command but don't want to see any output (not even errors), redirect it to /dev/null, which is a "black hole" in Linux: command > /dev/null 2>&1
+
