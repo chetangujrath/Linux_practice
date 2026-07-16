@@ -1,0 +1,80 @@
+In Linux, File Permissions are a fundamental security feature that determines who can perform specific actions on a file or directory. Since Linux is a multi-user operating system, these permissions ensure that users can only access files they are authorized to use.
+
+Here is a detailed breakdown of how they work.
+
+1. The Three User Categories
+    Linux classifies every file access into three categories:
+
+    Owner (u): The user who created the file or currently owns it.
+    Group (g): A group of users who share the same permissions for the file.
+    Others (o): Everyone else on the system who is not the owner and not in the specified group.
+
+2. The Three Permission Types
+    There are three primary actions you can perform on a file or directory:
+
+    Read (r):
+    File: Can view the content of the file.
+    Directory: Can list the files inside the directory (e.g., using ls).
+    Write (w):
+    File: Can modify or delete the content of the file.
+    Directory: Can create, delete, or rename files within that directory.
+    Execute (x):
+    File: Can run the file as a program or script.
+    Directory: Can "enter" the directory (e.g., using cd).
+
+3. Reading the Permission String
+    When you run the command ls -l in your terminal, you will see a string like this: -rwxr-xr--.
+
+    The first character denotes the type: - for a file, d for a directory.
+    The next 9 characters are divided into three groups of three (rwx):
+    Group 1 (positions 2-4): Permissions for the Owner.
+    Group 2 (positions 5-7): Permissions for the Group.
+    Group 3 (positions 8-10): Permissions for Others.
+    Example: rwxr-xr--
+
+    Owner: Read, Write, Execute (rwx)
+    Group: Read, Execute (r-x)
+    Others: Read only (r--)
+
+4. Modifying Permissions (chmod)
+    The chmod (change mode) command is used to change permissions. You can use it in two ways:
+
+    A. Symbolic Mode
+    Uses letters to add or remove permissions.
+
+    chmod u+x file.txt (Adds execute permission for the Owner)
+    chmod g-w file.txt (Removes write permission for the Group)
+    chmod o=r file.txt (Sets others to read-only exactly)
+    B. Octal Mode (Numerical)
+    Uses numbers to represent permissions:
+
+    4 = Read (r)
+    2 = Write (w)
+    1 = Execute (x)
+    0 = No permission
+    To set permissions, you sum these values:
+
+    7 (4+2+1) = Read, Write, Execute
+    5 (4+0+1) = Read and Execute
+    4 (4+0+0) = Read only
+    Example: chmod 755 script.sh
+
+    Owner: 7 (rwx)
+    Group: 5 (r-x)
+    Others: 5 (r-x)
+
+5. Changing Ownership (chown & chgrp)
+    If you need to change who owns a file or which group it belongs to:
+
+    chown (Change Owner): Changes the user owner.
+    Example: sudo chown username filename
+    chgrp (Change Group): Changes the group ownership.
+    Example: sudo chgrp groupname filename
+
+Summary Table for Quick Reference
+Permission	Numerical Value	Description
+r	4	Read
+w	2	Write
+x	1	Execute
+Quick Tip: Always be careful with permissions. Giving "write" access to "Others" (e.g., 777) is 
+generally considered a major security risk as it allows anyone on the system to modify your files.
