@@ -1,0 +1,44 @@
+In Linux, files are stored as inodes (which contain metadata like permissions, owner, and location on the disk) and the actual data blocks. When you create a "link," you are essentially creating a pointer to that inode.
+
+Understanding the difference between Hard Links and Soft (Symbolic) Links is crucial for managing files efficiently.
+
+1. Hard Links
+    A hard link is essentially an additional name for an existing file. Every file on a Linux system has at least one hard link (the filename itself).
+
+    How it works: When you create a hard link, you are creating another directory entry that points to the exact same inode as the original file.
+    Key Characteristics:
+    Shared Data: If you modify the content of a hard link, the original file changes, and vice-versa.
+    Independence: If you delete the original file, the hard link still works perfectly. The file is only deleted from the disk when the "link count" reaches zero.
+    Limitations:
+    You cannot create hard links for directories (to prevent infinite loops in the file system).
+    They must reside on the same file system/partition as the original file (because inodes are unique only within a specific file system).
+    Command: ln [original_file] [link_name]
+
+2. Soft Links (Symbolic Links)
+    A soft link (or symlink) is like a "shortcut" in Windows. It is a special type of file that contains a path pointing to another file or directory.
+
+    How it works: A soft link has its own unique inode. It does not contain the data of the original file; it merely stores the text string of the path to the original file.
+    Key Characteristics:
+    Cross-Platform: Can link across different file systems and partitions.
+    Directories: You can create soft links for directories.
+    Broken Links: If you delete the original file, the soft link becomes "broken" (dangling) and will point to a file that no longer exists.
+    Command: ln -s [original_file] [link_name]
+
+Summary Comparison Table
+Feature	Hard Link	Soft (Symbolic) Link
+What is it?	An additional name for an inode.	A pointer to a file path.
+Inode	Same as the original file.	Different inode from the original.
+Delete Original	File remains accessible.	Link becomes broken.
+Directories	Not allowed.	Allowed.
+Cross-partition	No (same filesystem only).	Yes.
+Visualizing with ls -li
+To see the inode numbers and link counts, use the -li flags with the ls command:
+
+bash
+
+ls -li
+The first column shows the inode number. If two files have the same inode number, they are hard links.
+The third column shows the link count. Creating a hard link increases this number.
+How to use them?
+Use a Hard Link when you want to ensure that a file remains accessible even if the original name is deleted, or when you want to avoid duplicating data.
+Use a Soft Link when you need to link directories, link across different drives, or simply want to create an easy-to-access shortcut in your home directory that points to a file deep within the system hierarchy.
