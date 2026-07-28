@@ -1,0 +1,39 @@
+1. Uptime
+    Uptime is simply the amount of time the system has been running since its last reboot.
+
+    How to check: Run the command uptime in your terminal.
+    What it tells you:
+    Availability: It tells you how long the server has been serving requests without interruption.
+    Stability: If a server has been up for 500 days, it is generally considered stable. If a server reboots every few days, it might indicate hardware failure, kernel panics, or unmanaged updates.
+    Maintenance: A very high uptime can sometimes be a "bad" thing, as it might mean the system has missed critical security patches that require a reboot.
+
+2. Load (System Load Average)
+    System load is often the most misunderstood metric in Linux. When you run uptime or top, you will see three numbers (e.g., load average: 0.50, 0.25, 0.10).
+
+    What these numbers mean:
+    These represent the System Load Average over the last 1, 5, and 15 minutes.
+
+    Load represents "Demand": It is the number of processes that are either using the CPU or waiting for CPU time (because they are queued).
+    It includes I/O Wait: If a process is waiting for a slow hard drive to finish reading/writing, it counts toward the load.
+    How to interpret the numbers:
+    To understand if your server is "overloaded," you must look at your CPU core count.
+
+    Single-core CPU: A load of 1.00 means the CPU is 100% utilized. Anything above 1.00 means processes are waiting in line.
+    Multi-core CPU: A load of 4.00 on a 4-core machine is equivalent to a load of 1.00 on a single-core machine. Both are at 100% capacity.
+    Rule of Thumb:
+
+    Under the core count: The system is running comfortably.
+    Equal to the core count: The system is at capacity.
+    Above the core count: The system is overloaded; processes are waiting, and you will likely notice a degradation in performance.
+
+3. How to investigate "High Load"
+    If you see a high load average, you need to find out what is causing it. Use these tools:
+
+    top or htop: These show you a real-time list of processes. Look at the %CPU column to see which process is hogging the CPU.
+    iostat: If your CPU usage is low but your load is high, it usually means your processes are stuck waiting for Disk I/O (Input/Output). iostat will tell you if your drives are struggling.
+    vmstat: This provides a deeper look into system memory, processes, and CPU activity.
+
+Summary Checklist
+uptime: Shows how long the system has been running.
+load average: Shows demand on the system over 1, 5, and 15 minutes.
+Context matters: A load of 5.0 is fine on a 16-core server but a major bottleneck on a 2-core server.

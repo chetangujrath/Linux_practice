@@ -1,0 +1,64 @@
+In Linux, everything is treated as a file, and running programs are managed as processes. Each process is assigned a unique identifier called a PID (Process ID). Understanding how to list and find these processes is a fundamental skill for system administration, debugging, and performance monitoring.
+
+Here is a detailed breakdown of the tools used to list and find processes.
+
+1. The ps Command (Process Status)
+    The ps command is the most standard tool for viewing a snapshot of active processes.
+
+    ps aux: The most common command.
+    a: Shows processes for all users.
+    u: Displays the process's user/owner.
+    x: Includes processes not attached to a terminal (like background daemons).
+    ps -ef: An alternative format often used by system administrators to see the full command line arguments and the parent process ID (PPID).
+    What to look for in the output:
+
+    USER: The user running the process.
+    PID: The unique process ID.
+    %CPU / %MEM: Resource consumption.
+    STAT: The state of the process (e.g., S for sleeping, R for running, Z for zombie).
+    COMMAND: The actual command that started the process.
+
+2. The top and htop Commands (Real-time Monitoring)
+    While ps provides a static snapshot, top and htop provide a dynamic, real-time view of your system.
+
+    top: Pre-installed on virtually every Linux distribution. It updates every few seconds and sorts processes by resource usage by default.
+    htop: An enhanced, interactive version of top. It allows you to scroll, sort by columns, and kill processes directly using the UI. (Note: You may need to install it via sudo apt install htop or sudo yum install htop).
+
+3. Finding Specific Processes
+    When you are looking for a specific program, you don't want to scroll through a list of hundreds of entries.
+
+    A. Using grep
+    You can pipe the output of ps into grep to filter by name:
+
+    bash
+
+    ps aux | grep firefox
+    B. Using pgrep
+    pgrep is a cleaner way to search for processes. It returns the PIDs of processes matching your criteria:
+
+    bash
+
+    pgrep -l nginx  # Shows the PID and the process name
+    C. Using pidof
+    If you only need the exact PID of a known process name, use pidof:
+
+    bash
+
+    pidof sshd
+
+4. The /proc File System
+    It is important to remember that in Linux, processes are not just managed by commands; they are files.
+
+    Every process has a directory inside the /proc folder named after its PID. If you want to see the details of a process with PID 1234, you can look into:
+
+    bash
+
+    ls /proc/1234
+    Inside this directory, you can find information about memory maps, environment variables, and open files for that specific process. This is how monitoring tools gather their data.
+
+5. Summary Cheat Sheet
+    Goal	                    Command
+    Snapshot of all processes	ps aux
+    Real-time monitoring	    top or htop
+    Find PID by name	        pgrep [name] or pidof [name]
+    Filter processes	        ps aux | grep [name]

@@ -1,0 +1,56 @@
+In Linux, managing processes is a fundamental skill. When you run a command in your terminal, it typically runs in the foreground, meaning it takes control of your terminal session. You cannot use the terminal for other tasks until that process finishes or is stopped.
+
+To handle multiple tasks efficiently, Linux provides mechanisms to move processes between the foreground and the background.
+
+1. Foreground Processes
+    A foreground process is one that is attached to your terminal. It receives input from your keyboard (like stdin) and sends output to your screen (stdout/stderr).
+
+    Behavior: The terminal "waits" for the process to finish. If you press Ctrl + C, the process receives an interrupt signal (SIGINT) and usually terminates.
+    Example: Running top or a long ls -R command.
+
+2. Background Processes
+    A background process runs independently of the terminal. You can continue typing commands while the process continues to work.
+
+    Behavior: The terminal remains available for other tasks.
+    Use case: Long-running tasks like large file downloads, database backups, or compiling code.
+
+3. How to Manage Processes
+    A. Starting a process in the background
+    To start a command directly in the background, append an ampersand (&) to the end of your command:
+
+    bash
+
+    ping google.com > output.txt &
+    The shell will return a Job ID (e.g., [1]) and a Process ID (PID).
+
+    B. Moving a running process to the background
+    If you have already started a command in the foreground and realize you need your terminal back:
+
+    Suspend the process: Press Ctrl + Z. This pauses the process.
+    Resume in background: Type the command bg.
+    This sends the job to the background and allows it to continue running.
+    C. Moving a background process to the foreground
+    If you want to interact with a process currently running in the background:
+
+    List jobs: Type jobs to see a list of background tasks and their Job IDs.
+    Bring to foreground: Type fg %n (where n is the Job ID).
+    Example: fg %1
+
+4. Important Commands Cheat Sheet
+    Command	Description
+    &	Add to end of command to run it in the background immediately.
+    Ctrl + Z	Pause (suspend) the current foreground process.
+    jobs	List all processes currently running in the background of your shell session.
+    bg	Resume a suspended job in the background.
+    fg	Bring a background job to the foreground.
+    kill %n	Terminate a background job (where n is the Job ID).
+    nohup	Runs a command that stays active even after you close the terminal session.
+
+5. Key Concept: Terminal Sessions
+    It is important to note that background jobs managed by bg/fg are linked to the terminal session. If you close your terminal window (or log out), these processes will typically receive a SIGHUP (hangup) signal and be terminated.
+
+    If you want a process to continue running after you log out, you should use tools like:
+
+    nohup: nohup command &
+    disown: Used on an existing background job to detach it from the shell.
+    Terminal Multiplexers: Tools like tmux or screen that keep processes alive in a virtual session regardless of your terminal state.

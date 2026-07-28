@@ -1,0 +1,42 @@
+In the context of Linux server administration, understanding how to monitor Available Memory and Disk Space is critical for ensuring system stability. If a server runs out of either, services will crash, databases will corrupt, and the system may become unresponsive.
+
+Here is a detailed breakdown of how to check and interpret these resources.
+
+1. Available Memory (RAM)
+    In Linux, "free" memory can be confusing because the kernel uses unused RAM as a cache/buffer to speed up disk I/O. If you look at a simple "free" number, it might look like you are out of RAM when you are actually doing fine.
+
+    The Command: free -h
+    The -h flag makes the output "human-readable" (GB/MB).
+
+    Interpreting the output:
+
+    Total: Total installed physical RAM.
+    Used: Memory currently used by processes.
+    Free: Memory that is completely unused (this is usually low).
+    Shared: Memory used by tmpfs (RAM disks).
+    Buff/Cache: Memory used by the kernel to cache files from the disk. This is actually available for applications if they need it.
+    Available: This is the most important column. It is an estimate of how much memory is actually available for starting new applications without swapping to disk.
+    Important Concepts:
+    Swap: This is space on your Hard Drive used as "overflow" memory. If your Available memory hits zero, the system moves inactive processes to Swap. This causes a massive performance hit because disk I/O is much slower than RAM.
+    OOM Killer (Out of Memory Killer): If your server runs out of both RAM and Swap, the Linux kernel will invoke the OOM Killer, which randomly (or by priority) kills processes to prevent the system from crashing entirely.
+
+2. Available Disk Space
+    Disk monitoring is about knowing how much storage is left for logs, databases, and application files.
+
+    Command A: df -h (Disk Free)
+    This shows the space used on your mounted file systems.
+
+    Look for: The / (root) partition. If this hits 100%, your server will likely stop working immediately because it cannot write temporary files or logs.
+    Tip: Look at the Use% column. A good rule of thumb is to set up alerts when disk usage hits 80-90%.
+    Command B: du -sh * (Disk Usage)
+    If you find that your disk is full, you need to know what is taking up the space.
+
+    Run du -sh /var/log/* or du -sh * inside a directory to see which subfolders are the culprits.
+    -s summarizes (total size of the directory), -h makes it human-readable.
+    Command C: ncdu (Highly Recommended)
+    If your distribution has it installed (or you can install it via apt or yum), ncdu is an interactive, visual disk usage analyzer that lets you navigate through directories to find "space hogs" quickly.
+
+Summary Checklist for a System Admin:
+    Is the system slow? Check free -h to see if you are relying too heavily on Swap.
+    Are services failing to start? Check df -h to ensure your partition isn't at 100% capacity.
+    Which files are taking up space? Use du -sh or ncdu to find large log files or uncleaned backups.

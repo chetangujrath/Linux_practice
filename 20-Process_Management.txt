@@ -1,0 +1,47 @@
+In Linux, Process Management is one of the most fundamental concepts of the operating system. To understand it, you must first understand that everything in Linux is either a file or a process.
+
+Here is a detailed breakdown of how Linux manages processes.
+
+1. What is a Process?
+    A process is essentially an instance of a running program. When you execute a command (like ls) or start an application (like a web browser), the kernel allocates memory, CPU time, and resources to that specific execution.
+
+    Every process is assigned a unique Process ID (PID). This is a numeric identifier used by the kernel to keep track of the process.
+
+2. The Process Lifecycle (States)
+    A process moves through various states during its life:
+
+    Running (R): The process is currently executing on the CPU or is in the run queue.
+    Sleeping (S/D): The process is waiting for an event (e.g., user input or data from a file). "Interruptible" (S) means it can wake up; "Uninterruptible" (D) usually means it's waiting for I/O and cannot be killed.
+    Stopped (T): The process has been paused (usually via Ctrl+Z or a signal).
+    Zombie (Z): The process has finished execution but still has an entry in the process table because its parent hasn't "waited" for its exit status yet.
+
+3. Process Hierarchy (Parent and Child)
+    Linux processes follow a tree structure. Every process is created by another process using the fork() system call.
+
+    Parent Process: The process that creates a new process.
+    Child Process: The new process created by the parent.
+    PID 1 (init/systemd): The very first process started by the kernel when the system boots. Every other process is a descendant of this process.
+
+4. Key Commands for Managing Processes
+    As a Linux user, you will interact with processes using these tools:
+
+    ps: Displays current processes.
+    Common usage: ps aux (shows all processes for all users with detailed info).
+    top / htop: Provides a real-time, dynamic view of running processes and system resource usage (CPU/RAM).
+    kill: Sends a signal to a process. By default, it sends SIGTERM (15), which asks the process to shut down gracefully.
+    Force kill: kill -9 <PID> (sends SIGKILL, which forces the process to terminate immediately).
+    &: Adding this to the end of a command (e.g., firefox &) runs the process in the background.
+    jobs / fg / bg: Used to manage background tasks. jobs lists them, fg brings them to the foreground, and bg resumes a stopped task in the background.
+
+5. Signals
+    Signals are the primary way the kernel and users communicate with processes.
+
+    SIGINT (2): Interrupt (usually Ctrl+C).
+    SIGTERM (15): The standard request for a process to terminate.
+    SIGKILL (9): Immediate termination (cannot be ignored by the process).
+    Why does this matter?
+    Understanding process management allows you to:
+
+    Troubleshoot system performance: Identify which program is hogging your CPU or RAM.
+    Ensure stability: Correctly shut down hung programs without rebooting the computer.
+    Optimize workflow: Run long-running tasks in the background so you can continue using your terminal.

@@ -1,0 +1,52 @@
+In the context of Linux server management, "Services Running" refers to the background processes (often called daemons) that provide functionality to the system, users, or the network.
+
+When you manage a server, understanding what is running is critical for security, performance, and troubleshooting. Here is a detailed breakdown of how to identify, manage, and understand services.
+
+1. What is a "Service" (Daemon)?
+    In Linux, a service is typically a program that runs in the background, listening for requests or performing periodic tasks, rather than waiting for direct user interaction.
+
+    Examples: sshd (allows remote SSH access), nginx/apache (web servers), mysql/postgresql (database servers), and cron (scheduled tasks).
+
+2. The Init System: systemd
+    Modern Linux distributions use systemd as the standard init system (the "manager" of all services). You interact with it primarily through the systemctl command.
+
+    How to see running services:
+    List all active services: systemctl list-units --type=service --state=running
+    Check the status of a specific service: systemctl status <service_name> (e.g., systemctl status sshd)
+
+3. Understanding Service States
+    When you run systemctl status, you will often see these states:
+
+    Loaded: The service unit file is correctly read by the system.
+    Active (running): The service is currently executing in the background.
+    Inactive (dead): The service is stopped.
+    Enabled: The service will automatically start when the server boots.
+    Disabled: The service will not start automatically.
+
+4. Essential Management Commands
+    If you are reviewing services on your server, these are the commands you need in your toolkit:
+
+    Task	Command
+    Start a service	sudo systemctl start <service>
+    Stop a service	sudo systemctl stop <service>
+    Restart a service	sudo systemctl restart <service>
+    Enable on boot	sudo systemctl enable <service>
+    Disable on boot	sudo systemctl disable <service>
+
+5. Why Review Running Services?
+    Reviewing services is a standard part of Server Hardening. An unoptimized or insecure server often has unnecessary services running.
+
+    Security: Every running service is a potential entry point for an attacker. If you don't need a service (e.g., a print server on a web cloud instance), disable and stop it.
+    Resource Usage: Services consume CPU and RAM. Identifying "zombie" or high-resource services helps you optimize server performance.
+    Conflict Resolution: If you are trying to host a website on port 80, but another service is already using it, you need to identify that service to stop it or reconfigure it.
+
+6. Pro-Tip: Looking at Network Ports
+    Often, you don't know the service name, but you know a port is "busy." Use the ss or netstat command to see which services are listening on specific ports:
+
+    sudo ss -tulpn
+
+    -t: TCP
+    -u: UDP
+    -l: Listening
+    -p: Show the process/service name
+    -n: Show numeric ports (e.g., 80 instead of 'http')

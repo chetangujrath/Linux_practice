@@ -1,0 +1,46 @@
+In the context of the Linux roadmap, "Server Review" typically refers to the process of auditing, maintaining, and verifying the health and security of a Linux server once it is already up and running.
+
+Think of it as a "periodic check-up" for your server to ensure it is running efficiently, securely, and reliably. Here is a breakdown of what a comprehensive Server Review involves:
+
+1. Security Audit
+    This is the most critical part of a review. You need to ensure your server isn't a "low-hanging fruit" for attackers.
+
+    User Management: Check /etc/passwd to see who has access. Remove old or unnecessary user accounts.
+    SSH Hardening: Ensure password authentication is disabled (use SSH keys), verify that the root login is disabled, and check if you are using a non-standard port.
+    Firewall Status: Check ufw or iptables to ensure only the necessary ports are open.
+    Software Updates: Run your package manager (apt upgrade or dnf upgrade) to ensure all security patches are applied.
+
+2. Resource & Performance Monitoring
+    A server might be running, but is it struggling? You should review resource consumption patterns.
+
+    CPU/RAM Usage: Use tools like top, htop, or btop to identify processes consuming too much memory or CPU.
+    Disk Health: Check disk space usage with df -h. Look for partitions that are reaching capacity. Use smartctl (from smartmontools) to check the actual physical health of the hard drives.
+    Load Averages: Understand what the load averages mean and ensure they aren't consistently exceeding the number of CPU cores.
+
+3. Log Analysis (The "Black Box" Review)
+    Linux keeps extensive logs. A good review involves looking through these to spot potential trouble before it causes a crash.
+
+    Systemd Journals: Use journalctl -p 3 -xb to see recent errors.
+    Authentication Logs: Check /var/log/auth.log (or secure) to look for unauthorized login attempts or brute-force attacks.
+    Application Logs: Check the specific logs for your services (e.g., Nginx, Apache, or MySQL logs) to see if there are repeated application-level errors.
+
+4. Backup Verification
+    A backup is only as good as your ability to restore it.
+
+    Integrity Check: Don't just check if the backup task ran; check if the backup file is actually usable.
+    Backup Strategy: Review if your backup rotation is working (are you keeping enough old backups? Are you deleting backups that are too old to save space?).
+
+5. Service Review
+    Startup Services: Run systemctl list-unit-files --state=enabled to see what starts automatically. Disable anything that isn't strictly necessary to reduce the "attack surface" and save resources.
+    Service Status: Use systemctl status <service> to ensure core services are running as expected and haven't entered a "failed" state.
+    Why is this important?
+    Preventive Maintenance: Identifying a failing disk or a memory leak early prevents unexpected downtime.
+    Compliance: If you are managing servers for a business, you often need to document that security audits were performed.
+    Optimization: You might find that you are paying for resources you aren't using, allowing you to downsize and save money.
+    Recommended Tooling for Beginners
+    If you are currently on the Linux roadmap, try installing these to help you perform your review:
+
+    htop: For a visual overview of processes.
+    ncdu: For finding what is taking up space on your disk.
+    nmap: To scan your server from the outside and see what ports are actually open.
+    fail2ban: To automatically ban IPs that show malicious behavior.
