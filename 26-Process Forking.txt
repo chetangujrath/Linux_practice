@@ -1,0 +1,59 @@
+In Linux, Process Forking is the fundamental mechanism used to create new processes. Understanding it is essential to grasping how multitasking works in Unix-like operating systems.
+
+Here is a detailed breakdown of how process forking works.
+
+1. What is a Process?
+    Before understanding forking, remember that a process is simply a running instance of a program. Every process has a unique identifier called a PID (Process ID) and a PPID (Parent Process ID).
+
+2. The fork() System Call
+    In Linux, the fork() system call is the primary way a process creates a new process. When a process calls fork(), the operating system creates a near-exact duplicate of the calling process.
+
+    Parent Process: The original process that initiated the fork().
+    Child Process: The newly created process.
+    How it works:
+    When fork() is called, the OS duplicates the memory space (code, data, heap, and stack), file descriptors, and environment variables of the parent into the child.
+
+3. The "Magic" of the Return Value
+    The most interesting aspect of fork() is that it is called once but returns twice:
+
+    In the Parent process: fork() returns the PID of the newly created child process. (This allows the parent to keep track of its children).
+    In the Child process: fork() returns 0. (This allows the code to identify that it is currently running as the child).
+    On failure: fork() returns -1 (if the system has reached the limit of processes it can handle).
+    Example logic flow:
+
+    c
+
+    pid_t pid = fork();
+    if (pid < 0) {
+        // Error occurred
+    } else if (pid == 0) {
+        // This code runs only in the CHILD
+    } else {
+        // This code runs only in the PARENT
+    }
+
+4. Copy-on-Write (COW)
+    You might wonder: If a process has 4GB of RAM, does Linux really copy all 4GB when you fork?
+
+    No. That would be extremely slow and memory-intensive. Linux uses an optimization called Copy-on-Write (COW).
+
+    Initially, the parent and child share the same physical memory pages.
+    These pages are marked as "read-only."
+    If either the parent or the child tries to write (modify) a page, the OS then makes a copy of that specific page for the process that wants to modify it.
+
+5. What happens after a Fork?
+    Typically, a fork() is followed by an exec() system call.
+
+    fork(): Creates the new process.
+    exec(): Replaces the current process image (the code and data) with a new program (e.g., executing /bin/ls).
+    This is how the shell works! When you type a command in your terminal, the shell (parent) forks a child, and the child execs the command you requested.
+
+6. Zombie and Orphan Processes
+    Zombie Process: If a child process finishes execution but the parent hasn't yet "waited" for it (via wait() system call), the child stays in the system table as a "zombie" so the parent can read its exit status. They consume no memory, but they do consume a PID.
+    Orphan Process: If a parent process terminates before its child, the child becomes an orphan. In Linux, these are "adopted" by the init process (PID 1), which periodically cleans them up.
+
+Summary
+    Creation: fork() creates an exact duplicate.
+    Identification: Parent gets the child's PID; Child gets 0.
+    Efficiency: Uses "Copy-on-Write" to save memory.
+    Lifecycle: Usually paired with exec() to run new programs and wait() to clean up resources.

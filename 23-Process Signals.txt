@@ -1,0 +1,48 @@
+In Linux, Process Signals are a fundamental mechanism for Inter-Process Communication (IPC). Think of them as a "notification system" that allows the operating system or other processes to tell a process that an event has occurred.
+
+Here is a detailed breakdown of how they work.
+
+1. What is a Signal?
+    A signal is an asynchronous notification sent to a process. It interrupts the normal flow of execution of the program. When a signal is received, the process must stop what it is doing and handle the signal according to its design.
+
+2. How are Signals Sent?
+    Signals can be triggered in several ways:
+
+    User actions: Pressing Ctrl+C sends a SIGINT (Interrupt) to the foreground process.
+    Hardware exceptions: Division by zero or accessing invalid memory (Segmentation Fault) triggers signals like SIGFPE or SIGSEGV.
+    Other processes: A process can send a signal to another process using the kill command or the kill() system call (provided it has the necessary permissions).
+    Kernel/OS: The kernel sends signals to processes to manage their lifecycle (e.g., stopping a background process).
+
+3. Common Signals
+    You can view a list of all signals on your system by running kill -l in your terminal. Here are the most important ones:
+
+    Signal Name	Number	Description
+    SIGINT	2	Interrupt (usually from Ctrl+C). Requests the process to terminate.
+    SIGKILL	9	Force kill. The process cannot ignore or catch this. It stops immediately.
+    SIGTERM	15	Termination (default for kill). Requests the process to shut down gracefully.
+    SIGSTOP	19	Pauses the process. It cannot be ignored or handled.
+    SIGCONT	18	Resumes a process that was paused by SIGSTOP.
+    SIGHUP	1	Hangup. Often used to tell a process to reload its configuration files.
+    SIGSEGV	11	Segmentation Violation (invalid memory access).
+
+4. How Processes Handle Signals
+    When a process receives a signal, it has three primary options:
+
+    Default Action: Perform the OS-defined action (e.g., terminating the process, ignoring the signal, or dumping core).
+    Ignore: The process chooses to do nothing when the signal arrives (e.g., many programs ignore SIGHUP).
+    Catch (Signal Handler): The process executes a custom function (a "signal handler") to respond to the signal (e.g., a text editor might catch SIGTERM to save your work before closing).
+    Note: SIGKILL and SIGSTOP cannot be caught or ignored. This is a safety mechanism to ensure the system administrator can always regain control of a runaway process.
+
+5. Practical Commands
+    kill -l: Lists all available signals.
+    kill <PID>: Sends SIGTERM (15) to a process by its Process ID.
+    kill -9 <PID>: Sends SIGKILL (9) to force-quit a process.
+    pkill <name>: Sends a signal to all processes matching a specific name.
+    htop / top: Interactive process viewers where you can press k to send a signal to a highlighted process.
+
+Summary for your Roadmap
+    Signals are the "emergency buttons" of the Linux operating system. Understanding them is crucial for:
+
+    Debugging: Identifying why a program crashed (e.g., "Why did it get a SIGSEGV?").
+    System Administration: Gracefully shutting down services (SIGTERM) or force-killing unresponsive ones (SIGKILL).
+    Development: Writing applications that can save state when the user closes them.

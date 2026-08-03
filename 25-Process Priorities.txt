@@ -1,0 +1,48 @@
+In Linux, Process Priorities determine how much CPU time a process receives relative to others. Because the CPU can only execute a limited number of instructions at once, the Linux kernel uses a "scheduler" to decide which process runs, for how long, and when.
+
+Here is a breakdown of how Linux manages these priorities.
+
+1. The Concept of "Nice" Values
+    The primary way a user influences process priority is through a value called "nice."
+
+    Range: The nice value ranges from -20 to 19.
+    -20: The highest priority (very "mean" to other processes, grabs all the CPU).
+    0: The default priority.
+    19: The lowest priority (very "nice" to other processes, lets them run first).
+    The Logic: A "nicer" process is one that is willing to yield its CPU time to others. Therefore, a higher nice value means a lower priority.
+
+2. Priority and Permissions
+    Normal Users: Can only "renice" their own processes and can only increase the nice value (make them "nicer," or lower priority). They cannot make a process have a negative nice value.
+    Root (Superuser): Can set any nice value, including negative ones (increasing priority), and can change the priority of any process on the system.
+
+3. How to View Process Priorities
+    You can see the current priority of processes using the top or ps commands.
+
+    top: Look for the NI column (Nice value) and the PR column (Actual Priority used by the kernel).
+    ps -el: This displays a long listing where the NI column shows the nice value and PRI shows the priority.
+
+4. How to Change Priorities
+    There are two main tools for modifying priorities:
+
+    nice: Used when starting a new process.
+    Example: nice -n 10 ./my_script.sh (Starts the script with a nice value of 10).
+    renice: Used to change the priority of a process that is already running.
+    Example: renice -n -5 -p 1234 (Changes the process with PID 1234 to a nice value of -5).
+
+5. Deep Dive: Nice vs. Real-Time Priority
+    It is important to distinguish between standard user processes and "Real-Time" processes:
+
+    Standard Processes (CFS - Completely Fair Scheduler): These use nice values. The kernel tries to be "fair" by balancing CPU time among them. Even a low-priority process will eventually get CPU time.
+    Real-Time Processes: These are designated with policies like SCHED_FIFO or SCHED_RR. They have priorities ranging from 1 to 99.
+    Crucial Rule: If a Real-Time process is running, it will always preempt (stop) any standard process, regardless of the standard process's nice value. These are typically reserved for critical system tasks or specialized hardware drivers.
+
+6. Why modify priority?
+    Resource Management: If you are running a heavy task (like compiling code or video encoding) on a server that also handles web traffic, you might "nice" the heavy task so it doesn't slow down the website for users.
+    Latency-Sensitive Tasks: If you have an application that must respond instantly to input, you might increase its priority (lower nice value) so it gets to the front of the scheduling line.
+
+Summary Checklist
+    Default nice value: 0.
+    Lower number = Higher priority.
+    Higher number = Lower priority.
+    Standard user: Can only increase nice (lower priority).
+    Root: Can decrease nice (raise priority).
